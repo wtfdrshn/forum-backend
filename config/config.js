@@ -13,7 +13,7 @@ const config = {
 
     apiVersion: 'v1' || '',
     clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
-    serverUrl: `${process.env.SERVER_URL}/api/v1` || `http://localhost:3000/api/v1`,
+    serverUrl: `${process.env.SERVER_URL}` || `http://localhost:3000`,
 
     // devMode: process.env.DEV_MODE || true,
 };
