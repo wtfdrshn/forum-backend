@@ -24,6 +24,10 @@ const memberRegistrationSchema = z.object({
     .min(3, {message: "Email should be of minimum 3 characters"}),
     // .max(20, {message: "Email should be of maximum 20 characters"}),
 
+    gender: z.string({
+        required_error: 'Please provide a gender',
+    })
+    .trim(),
 
     prn: z.number({
         required_error: 'Please provide a prn',

@@ -13,7 +13,7 @@ const getAllMembers = async (req, res, next) => {
 
 const memberRegistration = async (req, res, next) => {
     try {
-        const { first_name, last_name, email, prn, course, year } = req.body;
+        const { first_name, last_name, email, prn, course, year, gender } = req.body;
 
         const existingPRN = await Member.findOne({ prn });
         const existingEmail = await Member.findOne({ email });
@@ -37,6 +37,7 @@ const memberRegistration = async (req, res, next) => {
             prn,
             course,
             year,
+            gender,
             member_id : 'MEM' + Math.floor(Math.random() * 10000).toString(),
         });
 
