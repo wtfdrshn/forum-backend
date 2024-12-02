@@ -12,8 +12,8 @@ const config = {
     apiSecret: process.env.API_SECRET || '',
 
     apiVersion: 'v1' || '',
-    clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
-    serverUrl: `${process.env.SERVER_URL}` || `http://localhost:3000`,
+    clientUrl: process.env.CLIENT_URL || 'https://snsf.netlify.app',
+    serverUrl: `${process.env.SERVER_URL}` || 'https://forum-backend-6zul.onrender.com',
 
     // devMode: process.env.DEV_MODE || true,
 };
