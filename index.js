@@ -19,12 +19,26 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-    origin: config.clientUrl,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+const allowedOrigins = [
+  'http://localhost:5173',  // Local development
+  'https://snsf.netlify.app', // Your Netlify domain
+  config.clientUrl // From environment variables
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
