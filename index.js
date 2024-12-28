@@ -20,9 +20,10 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  'http://localhost:5173',  // Local development
-  'https://snsf.netlify.app', // Your Netlify domain
-  config.clientUrl // From environment variables
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://snsf.netlify.app',
+  config.clientUrl,
 ];
 
 const corsOptions = {
@@ -43,9 +44,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 cloudinary.config({
-  cloud_name: config.cloudName,
-  api_key: config.apiKey,
-  api_secret: config.apiSecret,
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
 });
 
 app.use('/uploads', express.static('uploads'));
@@ -61,5 +62,5 @@ app.use(errorHandler);
 
 app.listen(config.port, () => {
     connectDB();
-    console.log(`Server is running on ${config.serverUrl}:${config.port}`);
+    console.log(`Server is running on ${config.serverUrl}`);
 });

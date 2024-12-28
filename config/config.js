@@ -5,15 +5,15 @@ const config = {
 
     mongoURI: process.env.MONGO_URI || 'mongodb://localhost:27017/forum',
 
-    cloudName: process.env.CLOUD_NAME || '',
+    cloudName: process.env.CLOUD_NAME,
 
-    apiKey: process.env.API_KEY || '',
+    apiKey: process.env.API_KEY,
 
-    apiSecret: process.env.API_SECRET || '',
+    apiSecret: process.env.API_SECRET,
 
-    apiVersion: 'v1' || '',
-    clientUrl: process.env.CLIENT_URL || 'https://snsf.netlify.app',
-    serverUrl: `${process.env.SERVER_URL}` || 'https://forum-backend-6zul.onrender.com',
+    apiVersion: 'v1',
+    clientUrl: process.env.CLIENT_URL || 'http://localhost:5174',
+    serverUrl: process.env.SERVER_URL || 'http://localhost:3000',
 
     // devMode: process.env.DEV_MODE || true,
 };

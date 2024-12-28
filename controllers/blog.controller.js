@@ -79,11 +79,7 @@ const updateBlog = async (req, res) => {
         const updatedPost = await Blog.findByIdAndUpdate(req.params.id, updatedData, { new: true });
         res.status(200).json(updatedPost);
 
-        fs.unlink(req.file.path, (err) => {
-            if (err) {
-                console.error('Failed to delete local file:', err);
-            }
-        });
+        
     } catch (error) {
         console.log(error);
         
