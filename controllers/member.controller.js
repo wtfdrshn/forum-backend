@@ -1,6 +1,7 @@
 import e from 'express';
 import Badge from '../models/badge.model.js';
 import Member from '../models/member.model.js';
+import { sendRegistrationMail } from '../utils/mailUtils.js';
 
 const getAllMembers = async (req, res, next) => {
     try {
@@ -36,6 +37,15 @@ const memberRegistration = async (req, res, next) => {
 
         await member.save();
         await badge.save();
+
+        const emaildata = {
+            email: email,
+            name: name,
+            token: badge.token,
+            memId: badge.member_id,
+        }
+
+        await sendRegistrationMail(emaildata);
 
         res.status(201).json({
             details: 'Member registered successfully',

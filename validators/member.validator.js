@@ -56,8 +56,6 @@ const memberRegistrationSchema = z.object({
         required_error: 'Please provide a year',
     })
     .trim()
-    .min(3, {message: "Year should be of minimum 3 characters"})
-    .max(50, {message: "Year should be of maximum 50 characters"}),
 });
 
 export default { memberRegistrationSchema };
