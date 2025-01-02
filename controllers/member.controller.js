@@ -15,21 +15,6 @@ const memberRegistration = async (req, res, next) => {
     try {
         const { first_name, last_name, email, prn, course, year, gender } = req.body;
 
-        const existingPRN = await Member.findOne({ prn });
-        const existingEmail = await Member.findOne({ email });
-        if (existingPRN) {
-            const error = new Error();
-            error.message = 'PRN already exists';
-            error.statusCode = 400;
-            throw error;
-        }
-        if (existingEmail) {
-            const error = new Error();
-            error.message = 'Email already exists';
-            error.statusCode = 400;
-            throw error;
-        }
-
         const member = new Member({
             first_name,
             last_name,
@@ -57,8 +42,7 @@ const memberRegistration = async (req, res, next) => {
             member
         });
     } catch (error) {
-        console.error(error);    
-        return res.status(400).json({ details: error.message });
+        next(error);
     }
 }
 
