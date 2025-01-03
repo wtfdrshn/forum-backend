@@ -3,7 +3,7 @@ const config = {
 
     jwtSecret: process.env.JWT_SECRET,
 
-    mongoURI: process.env.MONGO_URI,
+    mongoURI: "mongodb+srv://Darshan:darshan88@cluster0.cdfgv43.mongodb.net/forum-backend",
 
     cloudName: process.env.CLOUD_NAME,
 
