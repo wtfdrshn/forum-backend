@@ -1,9 +1,12 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 const config = {
     port: process.env.PORT || 3000,
 
     jwtSecret: process.env.JWT_SECRET,
 
-    mongoURI: "mongodb+srv://Darshan:darshan88@cluster0.cdfgv43.mongodb.net/forum-backend",
+    mongoURI: process.env.MONGO_URI,
 
     cloudName: process.env.CLOUD_NAME,
 
