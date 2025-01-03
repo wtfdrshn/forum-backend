@@ -51,6 +51,10 @@ cloudinary.config({
 
 app.use('/uploads', express.static('uploads'));
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the SNSF API');
+});
+
 app.use(`/api/${config.apiVersion}/auth`, authRoute); // http://localhost:3000/api/v1/auth
 app.use(`/api/${config.apiVersion}/member`, memberRoute); // http://localhost:3000/api/v1/member
 app.use(`/api/${config.apiVersion}/gallery`, galleryRoute); // http://localhost:3000/api/v1/gallery
