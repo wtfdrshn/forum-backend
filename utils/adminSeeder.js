@@ -1,4 +1,4 @@
-import User from '../models/userModel.js';
+import User from '../models/user.model.js';
 import dotenv from 'dotenv';
 dotenv.config();
 import mongoose from 'mongoose';
@@ -20,10 +20,8 @@ const adminSeeder = async () => {
             });
             await user.save();
             console.log('Admin user created');
-            process.exit();
         }
     } catch (error) {
         console.error(`Error while creating admin`, error);
-        process.exit(1);
     }
 };
