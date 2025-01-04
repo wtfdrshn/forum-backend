@@ -18,8 +18,9 @@ const config = {
     clientUrl: process.env.CLIENT_URL || 'http://localhost:5174',
     serverUrl: process.env.SERVER_URL || 'http://localhost:3000',
 
-    resendApiKeys: process.env.RESEND_API
+    resendApiKeys: process.env.RESEND_API,
 
-    // devMode: process.env.DEV_MODE || true,
+    adminEmail: process.env.ADMIN_EMAIL,
+    adminPassword: process.env.ADMIN_PASSWORD
 };
 export default config;
