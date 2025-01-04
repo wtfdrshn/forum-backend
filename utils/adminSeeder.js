@@ -1,7 +1,12 @@
-const User = require('../models/user.model.js');
+import User from '../models/userModel.js';
+import dotenv from 'dotenv';
+dotenv.config();
+import mongoose from 'mongoose';
 
 const adminSeeder = async () => {
     try {
+        await mongoose.connect(process.env.MONGODB_URI);
+
         const admin = await User.findOne({ isAdmin: true });
         if (!admin) {
             const user = new User({
@@ -13,8 +18,10 @@ const adminSeeder = async () => {
             });
             await user.save();
             console.log('Admin user created');
+            process.exit();
         }
     } catch (error) {
         console.error(`Error while creating admin`, error);
+        process.exit(1);
     }
 };
