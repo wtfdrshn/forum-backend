@@ -8,7 +8,8 @@
   "start": "nodemon src/index.js",
   "build": "tsc",
   "scripts": {
-    "start": "node index.js && node utils/adminSeeder.js"
+    "start": "node utils/adminSeeder.js && node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",

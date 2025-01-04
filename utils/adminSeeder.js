@@ -5,7 +5,9 @@ import mongoose from 'mongoose';
 
 const adminSeeder = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI);
+        await mongoose.connect(process.env.MONGODB_URI).then(() => {
+            console.log('Connected to MongoDB');
+        });
 
         const admin = await User.findOne({ isAdmin: true });
         if (!admin) {
