@@ -5,7 +5,7 @@ import User from '../models/user.model.js';
 const connectDB = async () => {
   
   try {
-    await mongoose.connect(config.mongoURI)
+    await mongoose.connect(process.env.MONGO_URI || config.mongoURI)
     console.log('MongoDB connected successfully');
 
     const admin = await User.findOne({ isAdmin: true });
