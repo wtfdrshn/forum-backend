@@ -76,17 +76,38 @@ const getMemberBadge = async (req, res) => {
 const verifyMemberBadge = async(req, res, next) => {
     try {
         const { id } = req.params;
-
-        const member = await Badge.findOne({ token: id });
-
-        if (!member) {
+        
+        // First find the badge
+        const badge = await Badge.findOne({ token: id });
+        
+        if (!badge) {
             const error = new Error();
-            error.message = 'Member does not exists';
+            error.message = 'Member does not exist';
             error.statusCode = 404;
             throw error;
         }
 
-        return res.status(200).json({ member });
+        // Then find the corresponding member using member_id
+        const member = await Member.findOne({ member_id: badge.member_id });
+        
+        if (!member) {
+            const error = new Error();
+            error.message = 'Member details not found';
+            error.statusCode = 404;
+            throw error;
+        }
+
+        // Combine relevant information
+        const memberData = {
+            name: badge.name,
+            member_id: badge.member_id,
+            created_at: member.createdAt,
+            email: member.email,
+            course: member.course,
+            year: member.year
+        };
+
+        return res.status(200).json({ member: memberData });
 
     } catch (error) {
         next(error);
