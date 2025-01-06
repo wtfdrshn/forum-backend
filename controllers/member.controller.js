@@ -12,42 +12,9 @@ const getAllMembers = async (req, res, next) => {
     }
 }
 
-// Function to generate a random member ID
-const generateMemberId = () => {
-    return 'MEM' + Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-};
-
-// Function to get a unique member ID
-const getUniqueMemberId = async () => {
-    let memberId = generateMemberId();
-    let isUnique = false;
-    let maxAttempts = 10; // Prevent infinite loops
-    let attempts = 0;
-
-    while (!isUnique && attempts < maxAttempts) {
-        // Check if ID exists in database
-        const existingMember = await Member.findOne({ member_id: memberId });
-        if (!existingMember) {
-            isUnique = true;
-        } else {
-            memberId = generateMemberId();
-            attempts++;
-        }
-    }
-
-    if (!isUnique) {
-        throw new Error('Unable to generate unique member ID');
-    }
-
-    return memberId;
-};
-
 const memberRegistration = async (req, res, next) => {
     try {
         const { first_name, last_name, email, prn, course, year, gender } = req.body;
-
-        // Get unique member ID
-        const member_id = await getUniqueMemberId();
 
         const member = new Member({
             first_name,
@@ -57,7 +24,7 @@ const memberRegistration = async (req, res, next) => {
             course,
             year,
             gender,
-            member_id,
+            member_id : 'MEM' + Math.floor(Math.random() * 10000).toString(),
         });
 
         const name = first_name + ' ' + last_name;
