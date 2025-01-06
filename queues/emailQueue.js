@@ -93,6 +93,7 @@ class EmailQueueService {
         await resend.emails.send({
             from: "MIT-WPU Science & Spirituality Forum <welcome@snsf.live>",
             to: job.email,
+            replyTo: 'snsf@mitwpu.edu.in',
             subject: 'Welcome to MIT-WPU Science & Spirituality Forum',
             html: `
                 <p>Dear ${job.name},</p>
