@@ -12,6 +12,6 @@ memberRouter.route('/all').get(authMiddleware, adminMiddleware, memberController
 memberRouter.route('/join').post(validate(memberValidator.memberRegistrationSchema), memberController.memberRegistration);
 memberRouter.route('/badge/:id').get(memberController.getMemberBadge);
 memberRouter.route('/badge/verify/:id').get(memberController.verifyMemberBadge);
-memberRouter.route('/stats', memberController.getMemberStats);
+memberRouter.route('/stats').get(memberController.getMemberStats);
 
 export default memberRouter;
