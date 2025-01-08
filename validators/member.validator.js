@@ -48,9 +48,7 @@ const memberRegistrationSchema = z.object({
     course: z.string({
         required_error: 'Please provide a course',
     })
-    .trim()
-    .min(3, {message: "Course should be of minimum 3 characters"})
-    .max(50, {message: "Course should be of maximum 50 characters"}),
+    .trim(),
 
     year: z.string({
         required_error: 'Please provide a year',
