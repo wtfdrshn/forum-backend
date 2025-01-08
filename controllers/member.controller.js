@@ -114,9 +114,19 @@ const verifyMemberBadge = async(req, res, next) => {
     }
 }
 
+const getMemberStats = async(req, res, next) => {
+    try {
+        const totalMembers = await Member.countDocuments();
+        res.status(200).json({ totalMembers });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching member stats', error });
+    }
+}
+
 export default { 
     memberRegistration,
     getAllMembers,
     getMemberBadge,
-    verifyMemberBadge
+    verifyMemberBadge,
+    getMemberStats,
 };
