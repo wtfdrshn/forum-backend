@@ -24,11 +24,11 @@ const eventSchema = new mongoose.Schema({
     },
     buttonText: {
         type: String,
-        required: function() { return this.eventType === "upcoming"; }
+        required: false
     },
     buttonLink: {
         type: String,
-        required: function() { return this.eventType === "upcoming"; }
+        required: false
     },
     images: [{
         type: String,

@@ -62,7 +62,7 @@ const createEvent = async (req, res) => {
             eventType,
             eventDate,
             coverImage: coverImageResult.url,
-            ...(eventType === 'upcoming' && { buttonText, buttonLink }),
+            ...(buttonText && buttonLink && { buttonText, buttonLink }), // Include only if both are provided
             ...(images.length > 0 && { images })
         };
 
@@ -157,11 +157,14 @@ const updateEvent = async (req, res) => {
 
             // Clear or require button fields based on new type
             if (eventType === 'upcoming') {
-                if (!buttonText || !buttonLink) {
-                    throw new Error(400, "Button text and link are required for upcoming events");
+                // Only set buttonText and buttonLink if they are provided
+                if (buttonText || buttonLink) {
+                    event.buttonText = buttonText;
+                    event.buttonLink = buttonLink;
+                } else {
+                    event.buttonText = undefined;
+                    event.buttonLink = undefined;
                 }
-                event.buttonText = buttonText;
-                event.buttonLink = buttonLink;
                 event.images = []; // Clear images if switching to upcoming
             } else {
                 event.buttonText = undefined;
