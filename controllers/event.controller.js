@@ -16,10 +16,10 @@ const createEvent = async (req, res) => {
 
         // Validate required fields
         if (!title || !description || !eventType || !eventDate) {
-          return res.status(400).json({
-            success: false,
-            message: "All required fields must be provided"
-          });
+            return res.status(400).json({
+                success: false,
+                message: "All required fields must be provided"
+            });
         }
 
         // Check for cover image
@@ -33,7 +33,7 @@ const createEvent = async (req, res) => {
         // Upload cover image
         const coverImagePath = req.files.coverImage[0].path;
         const coverImageResult = await cloudinary.uploader.upload(coverImagePath, {
-          folder: 'events'
+            folder: 'events'
         });
 
         if (!coverImageResult?.url) {
@@ -48,7 +48,7 @@ const createEvent = async (req, res) => {
         if (eventType === 'previous' && req.files?.images) {
             const imageUploadPromises = req.files.images.map(image => 
                 cloudinary.uploader.upload(image.path, {
-                  folder: 'events'
+                    folder: 'events'
                 })
             );
             const imageResults = await Promise.all(imageUploadPromises);
@@ -159,8 +159,8 @@ const updateEvent = async (req, res) => {
             if (eventType === 'upcoming') {
                 // Only set buttonText and buttonLink if they are provided
                 if (buttonText || buttonLink) {
-                    event.buttonText = buttonText;
-                    event.buttonLink = buttonLink;
+                    event.buttonText = buttonText || undefined; // Set to undefined if empty
+                    event.buttonLink = buttonLink || undefined; // Set to undefined if empty
                 } else {
                     event.buttonText = undefined;
                     event.buttonLink = undefined;
@@ -209,7 +209,7 @@ const updateEvent = async (req, res) => {
         return res.status(200).json(event);
 
     } catch (error) {
-       return res.status(500).json(error);
+        return res.status(500).json(error);
     }
 };
 
@@ -236,7 +236,6 @@ const deleteEvent = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
-
 
 export default {
     createEvent,
