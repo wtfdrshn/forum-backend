@@ -76,6 +76,8 @@ const updateBlog = async (req, res) => {
             });
             updatedData.image = result.secure_url;
         }
+        updatedData.updatedAt = Date.now();
+        
         const updatedPost = await Blog.findByIdAndUpdate(req.params.id, updatedData, { new: true });
         res.status(200).json(updatedPost);
 
