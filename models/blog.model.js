@@ -8,9 +8,9 @@ const blogSchema = new mongoose.Schema({
   image: { type: String, required: false },
   slug: { type: String, unique: true },
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+  // createdAt: { type: Date, default: Date.now },
+  // updatedAt: { type: Date, default: Date.now },
+}, { timestamps: true });
 
 blogSchema.pre('validate', function (next) {
   if (this.title) {
