@@ -4,11 +4,9 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "dev": "nodemon src/index.js",
-  "start": "nodemon src/index.js",
-  "build": "tsc",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
