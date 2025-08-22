@@ -72,6 +72,9 @@ app.get('/health', async (req, res) => {
     message: 'Server is running',
     database: finalDbStatus,
     environment: process.env.NODE_ENV || 'development',
+    databaseName: mongoose.connection.db?.databaseName || 'unknown',
+    host: mongoose.connection.host || 'unknown',
+    mongoUri: config.mongoURI ? 'configured' : 'not configured',
     timestamp: new Date().toISOString()
   });
 });
