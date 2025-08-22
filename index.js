@@ -76,6 +76,22 @@ app.get('/health', async (req, res) => {
   });
 });
 
+// Test database connection endpoint
+app.get('/test-db', async (req, res) => {
+  try {
+    await connectDB();
+    res.status(200).json({ 
+      message: 'Database connection successful',
+      status: 'connected'
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      message: 'Database connection failed',
+      error: error.message
+    });
+  }
+});
+
 app.use(`/api/${config.apiVersion}/auth`, authRoute); // http://localhost:3000/api/v1/auth
 app.use(`/api/${config.apiVersion}/member`, memberRoute); // http://localhost:3000/api/v1/member
 app.use(`/api/${config.apiVersion}/gallery`, galleryRoute); // http://localhost:3000/api/v1/gallery
@@ -87,33 +103,15 @@ app.use(errorHandler);
 
 // For Vercel deployment, we need to export the app
 // and handle database connection differently
-let isConnected = false;
-
-const connectToDatabase = async () => {
-    if (!isConnected) {
-        try {
-            await connectDB();
-            isConnected = true;
-            console.log('Database connected successfully');
-        } catch (error) {
-            console.error('Database connection failed:', error);
-        }
-    }
-};
-
-// Connect to database on first request
-app.use(async (req, res, next) => {
-    if (!isConnected) {
-        await connectToDatabase();
-    }
-    next();
-});
 
 // For local development
 if (process.env.NODE_ENV !== 'production') {
     app.listen(config.port, () => {
         console.log(`Server is running on ${config.port}`);
-        connectToDatabase();
+        // Connect to database for local development
+        connectDB().catch(err => {
+            console.error('Database connection failed:', err);
+        });
     });
 }
 

@@ -19,12 +19,7 @@ const connectDB = async () => {
       return true;
     }
 
-    const connection = await mongoose.connect(uri, {
-      // Add connection options for better stability
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-    });
+    const connection = await mongoose.connect(uri);
 
     console.log('MongoDB connected successfully to', connection.connection.host);
 

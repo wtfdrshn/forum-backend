@@ -2,6 +2,7 @@ import express from "express";
 import teamController from "../controllers/team.controller.js";
 import authMiddleware from "../middlewares/auth-middleware.js";
 import adminMiddleware from "../middlewares/admin-middleware.js";
+import dbCheckMiddleware from "../middlewares/db-check-middleware.js";
 import multer from "multer";
 const TeamRoutes = express.Router();
 
@@ -33,7 +34,7 @@ const handleMulterError = (err, req, res, next) => {
     next(err);
 };
 
-TeamRoutes.get("/all", teamController.getMembers);
+TeamRoutes.get("/all", dbCheckMiddleware, teamController.getMembers);
 TeamRoutes.post("/add", authMiddleware, adminMiddleware, upload.single('photo'), handleMulterError, teamController.addMember);
 TeamRoutes.put("/update/:id", authMiddleware, adminMiddleware, upload.single('photo'), handleMulterError, teamController.updateMember);
 TeamRoutes.delete("/delete/:id", authMiddleware, adminMiddleware, teamController.deleteMember);
