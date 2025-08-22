@@ -2,6 +2,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import {v2 as cloudinary} from 'cloudinary';
+import mongoose from 'mongoose';
 
 import connectDB from './utils/db.js';
 
@@ -52,6 +53,16 @@ app.get('/', (req, res) => {
   res.send('Welcome to the SNSF API');
 });
 
+app.get('/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  res.status(200).json({ 
+    status: 'OK', 
+    message: 'Server is running',
+    database: dbStatus,
+    timestamp: new Date().toISOString()
+  });
+});
+
 app.use(`/api/${config.apiVersion}/auth`, authRoute); // http://localhost:3000/api/v1/auth
 app.use(`/api/${config.apiVersion}/member`, memberRoute); // http://localhost:3000/api/v1/member
 app.use(`/api/${config.apiVersion}/gallery`, galleryRoute); // http://localhost:3000/api/v1/gallery
@@ -62,6 +73,9 @@ app.use(`/api/${config.apiVersion}/team`, teamRoute); // http://localhost:3000/a
 app.use(errorHandler);
 
 app.listen(config.port, () => {
-    connectDB();
     console.log(`Server is running on ${config.port}`);
+    // Connect to database but don't block server startup
+    connectDB().catch(err => {
+        console.error('Database connection failed:', err);
+    });
 });

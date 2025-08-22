@@ -3,6 +3,7 @@ import galleryController from '../controllers/gallery.controller.js';
 import multer from 'multer';
 import adminMiddleware from '../middlewares/admin-middleware.js';
 import authMiddleware from '../middlewares/auth-middleware.js';
+import dbCheckMiddleware from '../middlewares/db-check-middleware.js';
 
 const galleryRouter = express.Router();
 
@@ -18,7 +19,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-galleryRouter.route('/all').get(galleryController.getImages);
+galleryRouter.route('/all').get(dbCheckMiddleware, galleryController.getImages);
 galleryRouter.route('/upload').post(authMiddleware, adminMiddleware, upload.single('image'), galleryController.uploadImage);
 galleryRouter.route('/delete/:id').delete(authMiddleware, adminMiddleware, galleryController.deleteImage);
 

@@ -7,7 +7,11 @@ const getImages = async (req, res, next) => {
         const images = await Image.find();
         res.status(200).json(images);
     } catch (error) {
-        res.status(500).json(error);
+        console.error('Error fetching images:', error);
+        res.status(500).json({ 
+            message: 'Failed to fetch images',
+            error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+        });
     }
 };
 

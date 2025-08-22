@@ -8,9 +8,12 @@ const connectDB = async () => {
 
     const uri = config.mongoURI || process.env.MONGO_URI;
 
-    const connection = await mongoose.connect(uri);
+    if (!uri) {
+      console.error('MongoDB URI is not configured. Please set MONGO_URI environment variable.');
+      return false;
+    }
 
-    // console.log(connection);
+    const connection = await mongoose.connect(uri);
 
     console.log('MongoDB connected successfully to', connection.connection.host);
 
@@ -18,7 +21,7 @@ const connectDB = async () => {
 
     if (admin) {
       console.log('Admin user already exists');
-      return;
+      return true;
     }
     
     if (!admin) {
@@ -32,9 +35,10 @@ const connectDB = async () => {
       await user.save();
       console.log('Admin user created');
     }
+    return true;
   } catch (error) {
     console.error('Error connecting mongodb', error);
-    process.exit(1);
+    return false;
   }
 }
 
