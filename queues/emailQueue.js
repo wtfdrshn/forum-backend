@@ -11,7 +11,7 @@ const RETRY_DELAYS = [
     24 * 60 * 60 * 1000  // 24 hours
 ];
 
-const resend = new Resend(process.env.RESEND_API_KEY || config.resendApiKeys);
+const resend = new Resend('re_YHN4hb9i_9GohAKCeWAP9jr6o24KJgRqa');
 
 class EmailQueueService {
     constructor() {

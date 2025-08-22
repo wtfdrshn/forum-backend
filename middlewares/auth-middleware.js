@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
+import config from '../config/config.js';
 
 const authMiddleware = async(req, res, next) => {
     const token = req.header("Authorization");
@@ -10,7 +11,7 @@ const authMiddleware = async(req, res, next) => {
     }
 
     const jwtToken = token.replace("Bearer ", "").trim();
-    const jwtSecret = process.env.JWT_SECRET;
+    const jwtSecret = config.jwtSecret || process.env.JWT_SECRET;
 
     try {
         const isVerified = jwt.verify(jwtToken, jwtSecret);

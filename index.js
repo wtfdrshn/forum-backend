@@ -9,6 +9,16 @@ import config from './config/config.js';
 
 import errorHandler from './middlewares/error-middleware.js';
 
+// Import models to register schemas
+import './models/user.model.js';
+import './models/gallery.model.js';
+import './models/blog.model.js';
+import './models/event.model.js';
+import './models/member.model.js';
+import './models/team.model.js';
+import './models/badge.model.js';
+import './models/emailQueue.model.js';
+
 import authRoute from './routes/auth.routes.js';
 import memberRoute from './routes/member.routes.js';
 import galleryRoute from './routes/gallery.routes.js';
@@ -53,5 +63,5 @@ app.use(errorHandler);
 
 app.listen(config.port, () => {
     connectDB();
-    console.log(`Server is running on ${config.serverUrl}`);
+    console.log(`Server is running on ${config.port}`);
 });

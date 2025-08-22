@@ -6,10 +6,13 @@ const connectDB = async () => {
   
   try {
 
-    const uri = process.env.MONGO_URI || config.mongoURI;
+    const uri = config.mongoURI || process.env.MONGO_URI;
 
-    await mongoose.connect(uri);
-    console.log('MongoDB connected successfully');
+    const connection = await mongoose.connect(uri);
+
+    // console.log(connection);
+
+    console.log('MongoDB connected successfully to', connection.connection.host);
 
     const admin = await User.findOne({ isAdmin: true });
 

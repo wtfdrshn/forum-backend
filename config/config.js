@@ -4,7 +4,7 @@ dotenv.config();
 const config = {
     port: process.env.PORT,
 
-    jwtSecret: process.env.JWT_SECRET,
+    jwtSecret: process.env.JWT_SECRET || 'darshan88',
 
     mongoURI: process.env.MONGO_URI,
 
@@ -15,12 +15,12 @@ const config = {
     apiSecret: process.env.API_SECRET,
 
     apiVersion: 'v1',
-    clientUrl: process.env.CLIENT_URL || 'http://localhost:5174',
-    serverUrl: process.env.SERVER_URL || 'http://localhost:3000',
+    clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+    serverUrl: process.env.SERVER_URL || 'http://localhost:5000',
 
-    resendApiKeys: process.env.RESEND_API,
+    resendApiKey: process.env.RESEND_API_KEY,
 
-    adminEmail: process.env.ADMIN_EMAIL,
-    adminPassword: process.env.ADMIN_PASSWORD
+    adminEmail: process.env.ADMIN_EMAIL || 'admin@example.com',
+    adminPassword: process.env.ADMIN_PASSWORD || 'admin123'
 };
 export default config;
