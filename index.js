@@ -30,21 +30,7 @@ dotenv.config();
 
 const app = express();
 
-const corsOptions = {
-  origin: [
-    'http://localhost:5173', 
-    'https://snsf.live', 
-    'https://www.snsf.live',
-    'https://forum.snsf.live',
-    'https://server.snsf.live'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.json());
 
