@@ -13,28 +13,40 @@ const connectDB = async () => {
       return false;
     }
 
-    const connection = await mongoose.connect(uri);
+    // Check if already connected
+    if (mongoose.connection.readyState === 1) {
+      console.log('MongoDB already connected');
+      return true;
+    }
+
+    const connection = await mongoose.connect(uri, {
+      // Add connection options for better stability
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    });
 
     console.log('MongoDB connected successfully to', connection.connection.host);
 
-    const admin = await User.findOne({ isAdmin: true });
+    // Only create admin user if not in production or if explicitly needed
+    if (process.env.NODE_ENV !== 'development') {
+      const admin = await User.findOne({ isAdmin: true });
 
-    if (admin) {
-      console.log('Admin user already exists');
-      return true;
+      if (admin) {
+        console.log('Admin user already exists');
+      } else {
+        const user = new User({
+          first_name: 'Website',
+          last_name: 'Admin',
+          email: config.adminEmail,
+          password: config.adminPassword,
+          isAdmin: true,
+        });
+        await user.save();
+        console.log('Admin user created');
+      }
     }
     
-    if (!admin) {
-      const user = new User({
-        first_name: 'Website',
-        last_name: 'Admin',
-        email: config.adminEmail,
-        password: config.adminPassword,
-        isAdmin: true,
-      });
-      await user.save();
-      console.log('Admin user created');
-    }
     return true;
   } catch (error) {
     console.error('Error connecting mongodb', error);

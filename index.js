@@ -53,12 +53,25 @@ app.get('/', (req, res) => {
   res.send('Welcome to the SNSF API');
 });
 
-app.get('/health', (req, res) => {
+app.get('/health', async (req, res) => {
   const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  
+  // Try to connect if not connected
+  if (dbStatus === 'disconnected') {
+    try {
+      await connectDB();
+    } catch (error) {
+      console.error('Health check: Database connection failed:', error);
+    }
+  }
+  
+  const finalDbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  
   res.status(200).json({ 
     status: 'OK', 
     message: 'Server is running',
-    database: dbStatus,
+    database: finalDbStatus,
+    environment: process.env.NODE_ENV || 'development',
     timestamp: new Date().toISOString()
   });
 });
@@ -72,10 +85,37 @@ app.use(`/api/${config.apiVersion}/team`, teamRoute); // http://localhost:3000/a
 
 app.use(errorHandler);
 
-app.listen(config.port, () => {
-    console.log(`Server is running on ${config.port}`);
-    // Connect to database but don't block server startup
-    connectDB().catch(err => {
-        console.error('Database connection failed:', err);
-    });
+// For Vercel deployment, we need to export the app
+// and handle database connection differently
+let isConnected = false;
+
+const connectToDatabase = async () => {
+    if (!isConnected) {
+        try {
+            await connectDB();
+            isConnected = true;
+            console.log('Database connected successfully');
+        } catch (error) {
+            console.error('Database connection failed:', error);
+        }
+    }
+};
+
+// Connect to database on first request
+app.use(async (req, res, next) => {
+    if (!isConnected) {
+        await connectToDatabase();
+    }
+    next();
 });
+
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(config.port, () => {
+        console.log(`Server is running on ${config.port}`);
+        connectToDatabase();
+    });
+}
+
+// Export for Vercel
+export default app;
