@@ -11,7 +11,7 @@ const RETRY_DELAYS = [
     24 * 60 * 60 * 1000  // 24 hours
 ];
 
-const resend = new Resend('re_YHN4hb9i_9GohAKCeWAP9jr6o24KJgRqa');
+const resend = new Resend("re_LxXEA3aq_Hm4RHQpn26b7Js6xBBqbkKJb");
 
 class EmailQueueService {
     constructor() {
