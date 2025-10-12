@@ -19,6 +19,8 @@ import './models/member.model.js';
 import './models/team.model.js';
 import './models/badge.model.js';
 import './models/emailQueue.model.js';
+import './models/recruitment.model.js';
+import './models/recruitmentApplication.model.js';
 
 import authRoute from './routes/auth.routes.js';
 import memberRoute from './routes/member.routes.js';
@@ -26,6 +28,7 @@ import galleryRoute from './routes/gallery.routes.js';
 import blogRoute from './routes/blog.routes.js';
 import eventRoute from './routes/event.routes.js';
 import teamRoute from './routes/team.routes.js';
+import recruitmentRoute from './routes/recruitment.routes.js';
 dotenv.config();
 
 const app = express();
@@ -94,6 +97,7 @@ app.use(`/api/${config.apiVersion}/gallery`, galleryRoute); // http://localhost:
 app.use(`/api/${config.apiVersion}/blog`, blogRoute); // http://localhost:3000/api/v1/blog
 app.use(`/api/${config.apiVersion}/events`, eventRoute); // http://localhost:3000/api/v1/event
 app.use(`/api/${config.apiVersion}/team`, teamRoute); // http://localhost:3000/api/v1/team
+app.use(`/api/${config.apiVersion}/recruitment`, recruitmentRoute); // http://localhost:3000/api/v1/recruitment
 
 app.use(errorHandler);
 
