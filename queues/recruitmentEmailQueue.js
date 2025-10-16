@@ -14,18 +14,35 @@ class RecruitmentEmailQueueService {
     }
 
     async addToQueue(emailData) {
-        const job = new RecruitmentEmailQueue({
-            ...emailData,
-            nextAttempt: Date.now()
-        });
-        await job.save();
-        return job._id;
+        try {
+            // Check if database is connected
+            if (!RecruitmentEmailQueue.db || RecruitmentEmailQueue.db.readyState !== 1) {
+                console.error('Database not connected, cannot add to queue');
+                throw new Error('Database not connected');
+            }
+
+            const job = new RecruitmentEmailQueue({
+                ...emailData,
+                nextAttempt: Date.now()
+            });
+            await job.save();
+            return job._id;
+        } catch (error) {
+            console.error('Error adding to recruitment email queue:', error);
+            throw error;
+        }
     }
 
     async processQueue() {
         if (this.isProcessing) return;
         this.isProcessing = true;
         try {
+            // Check if database is connected
+            if (!RecruitmentEmailQueue.db || RecruitmentEmailQueue.db.readyState !== 1) {
+                console.log('Database not connected, skipping queue processing');
+                return;
+            }
+
             const dueJobs = await RecruitmentEmailQueue.find({
                 status: 'pending',
                 nextAttempt: { $lte: new Date() }

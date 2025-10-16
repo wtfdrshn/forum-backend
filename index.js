@@ -21,6 +21,7 @@ import './models/badge.model.js';
 import './models/emailQueue.model.js';
 import './models/recruitment.model.js';
 import './models/recruitmentApplication.model.js';
+import './models/recruitmentEmailQueue.model.js';
 
 import authRoute from './routes/auth.routes.js';
 import memberRoute from './routes/member.routes.js';
@@ -106,12 +107,16 @@ app.use(errorHandler);
 
 // For local development
 if (process.env.NODE_ENV !== 'production') {
-    app.listen(config.port, () => {
+    app.listen(config.port, async () => {
         console.log(`Server is running on ${config.port}`);
         // Connect to database for local development
-        connectDB().catch(err => {
+        try {
+            await connectDB();
+            console.log('Server initialization complete');
+        } catch (err) {
             console.error('Database connection failed:', err);
-        });
+            process.exit(1);
+        }
     });
 }
 

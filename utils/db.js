@@ -19,9 +19,26 @@ const connectDB = async () => {
       return true;
     }
 
-    const connection = await mongoose.connect(uri);
+    // Set connection options to handle timeouts
+    const options = {
+      serverSelectionTimeoutMS: 10000, // Keep trying to send operations for 10 seconds
+      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+      bufferCommands: false, // Disable mongoose buffering
+      bufferMaxEntries: 0 // Disable mongoose buffering
+    };
+
+    const connection = await mongoose.connect(uri, options);
 
     console.log('MongoDB connected successfully to', connection.connection.host);
+
+    // Initialize email queue services after database connection
+    try {
+      const { emailQueueService } = await import('../queues/emailQueue.js');
+      const { recruitmentEmailQueueService } = await import('../queues/recruitmentEmailQueue.js');
+      console.log('Email queue services initialized');
+    } catch (queueError) {
+      console.error('Error initializing email queue services:', queueError);
+    }
 
     // Only create admin user if not in production or if explicitly needed
     if (process.env.NODE_ENV !== 'development') {

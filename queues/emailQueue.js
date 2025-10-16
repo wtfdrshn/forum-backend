@@ -21,6 +21,12 @@ class EmailQueueService {
 
     async addToQueue(emailData) {
         try {
+            // Check if database is connected
+            if (!EmailQueue.db || EmailQueue.db.readyState !== 1) {
+                console.error('Database not connected, cannot add to queue');
+                throw new Error('Database not connected');
+            }
+
             const emailJob = new EmailQueue({
                 ...emailData,
                 nextAttempt: Date.now()
@@ -39,6 +45,12 @@ class EmailQueueService {
         this.isProcessing = true;
 
         try {
+            // Check if database is connected
+            if (!EmailQueue.db || EmailQueue.db.readyState !== 1) {
+                console.log('Database not connected, skipping queue processing');
+                return;
+            }
+
             // Find all pending emails that are due for processing
             const pendingEmails = await EmailQueue.find({
                 status: 'pending',
