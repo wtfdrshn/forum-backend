@@ -33,6 +33,14 @@ const recruitmentApplicationSchema = new mongoose.Schema({
         year: {
             type: String,
             trim: true
+        },
+        prn: {
+            type: String,
+            trim: true
+        },
+        gender: {
+            type: String,
+            trim: true
         }
     },
     answers: [{
