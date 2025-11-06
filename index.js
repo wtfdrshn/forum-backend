@@ -46,11 +46,11 @@ cloudinary.config({
 
 app.use('/uploads', express.static('uploads'));
 
-app.get('/', (req, res) => {
+app.get('/api/v1', (req, res) => {
   res.send('Welcome to the SNSF API');
 });
 
-app.get('/health', async (req, res) => {
+app.get('/api/v1/health', async (req, res) => {
   const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
   
   // Try to connect if not connected
@@ -74,22 +74,6 @@ app.get('/health', async (req, res) => {
     mongoUri: config.mongoURI ? 'configured' : 'not configured',
     timestamp: new Date().toISOString()
   });
-});
-
-// Test database connection endpoint
-app.get('/test-db', async (req, res) => {
-  try {
-    await connectDB();
-    res.status(200).json({ 
-      message: 'Database connection successful',
-      status: 'connected'
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      message: 'Database connection failed',
-      error: error.message
-    });
-  }
 });
 
 app.use(`/api/${config.apiVersion}/auth`, authRoute); // http://localhost:3000/api/v1/auth
@@ -118,7 +102,7 @@ if (process.env.NODE_ENV !== 'production') {
             process.exit(1);
         }
     });
-}
+} 
 
 // Export for Vercel
 export default app;
