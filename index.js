@@ -30,6 +30,7 @@ import blogRoute from './routes/blog.routes.js';
 import eventRoute from './routes/event.routes.js';
 import teamRoute from './routes/team.routes.js';
 import recruitmentRoute from './routes/recruitment.routes.js';
+import adminRoute from './routes/admin.routes.js';
 dotenv.config();
 
 const app = express();
@@ -83,6 +84,7 @@ app.use(`/api/${config.apiVersion}/blog`, blogRoute); // http://localhost:3000/a
 app.use(`/api/${config.apiVersion}/events`, eventRoute); // http://localhost:3000/api/v1/event
 app.use(`/api/${config.apiVersion}/team`, teamRoute); // http://localhost:3000/api/v1/team
 app.use(`/api/${config.apiVersion}/recruitment`, recruitmentRoute); // http://localhost:3000/api/v1/recruitment
+app.use(`/api/${config.apiVersion}/admin`, adminRoute); // http://localhost:3000/api/v1/admin
 
 app.use(errorHandler);
 

@@ -23,6 +23,12 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false,
+    },
+    permissions: {
+        type: Object,
+        default: {},
+        // Structure: { pageName: { view: Boolean, edit: Boolean } }
+        // Example: { members: { view: true, edit: false }, blog: { view: true, edit: true } }
     }
 });
 

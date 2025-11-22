@@ -274,11 +274,34 @@ const deleteRecruitment = async (req, res) => {
 const getApplications = async (req, res) => {
     try {
         const { recruitmentId } = req.params;
-        const { status, page = 1, limit = 10 } = req.query;
+        const { status, page = 1, limit = 10, search, questionIndex, answerValue } = req.query;
 
         const filter = { recruitmentId };
         if (status) {
             filter.status = status;
+        }
+
+        // Add search filter for name or PRN
+        if (search) {
+            filter.$or = [
+                { 'applicantInfo.name': { $regex: search, $options: 'i' } },
+                { 'applicantInfo.prn': { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        // Add filter for choice-based question answer
+        if (questionIndex !== undefined && answerValue !== undefined && questionIndex !== '' && answerValue !== '') {
+            const questionIdx = parseInt(questionIndex);
+            // Filter applications where the answer array contains an answer matching the question index and value
+            filter['answers'] = {
+                $elemMatch: {
+                    questionIndex: questionIdx,
+                    $or: [
+                        { answer: answerValue }, // For single value answers (radio, dropdown)
+                        { answer: { $in: [answerValue] } } // For array answers (checkbox)
+                    ]
+                }
+            };
         }
 
         const applications = await RecruitmentApplication.find(filter)
