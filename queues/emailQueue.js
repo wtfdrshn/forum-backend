@@ -45,8 +45,9 @@ class EmailQueueService {
         this.isProcessing = true;
 
         try {
-            // Check if database is connected
-            if (!EmailQueue.db || EmailQueue.db.readyState !== 1) {
+            // Check if database is connected using mongoose connection
+            const mongoose = await import('mongoose');
+            if (mongoose.default.connection.readyState !== 1) {
                 console.log('Database not connected, skipping queue processing');
                 return;
             }

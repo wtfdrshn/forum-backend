@@ -10,9 +10,12 @@ const port = config.port || 5000;
 
 async function startServer() {
 	try {
+		console.log('Starting server...');
 		await connectDB();
+		console.log('Database connected, starting HTTP server...');
 		app.listen(port, () => {
 			console.log(`Server is running on port ${port}`);
+			console.log('Server initialization complete');
 		});
 	} catch (error) {
 		console.error('Failed to start server:', error);

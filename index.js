@@ -114,23 +114,8 @@ app.use(`/api/${config.apiVersion}/admin`, adminRoute); // http://localhost:3000
 
 app.use(errorHandler);
 
-// For Vercel deployment, we need to export the app
-// and handle database connection differently
+// Note: Server startup is handled in server.js for PM2/production
+// This file only exports the app for Vercel serverless functions
 
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(config.port, async () => {
-        console.log(`Server is running on ${config.port}`);
-        // Connect to database for local development
-        try {
-            await connectDB();
-            console.log('Server initialization complete');
-        } catch (err) {
-            console.error('Database connection failed:', err);
-            process.exit(1);
-        }
-    });
-} 
-
-// Export for Vercel
+// Export for Vercel and server.js
 export default app;
