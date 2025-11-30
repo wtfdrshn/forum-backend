@@ -79,18 +79,7 @@ const submitApplication = async (req, res) => {
             });
         }
 
-        // Check if email already applied
-        const existingApplication = await RecruitmentApplication.findOne({
-            recruitmentId,
-            'applicantInfo.email': applicantInfo.email
-        });
-
-        if (existingApplication) {
-            return res.status(400).json({
-                success: false,
-                message: 'You have already applied for this recruitment'
-            });
-        }
+        // Note: Allowing same email to apply multiple times (removed duplicate check)
 
         // Normalize applicant info to match schema requirements
         const normalizedApplicantInfo = {
