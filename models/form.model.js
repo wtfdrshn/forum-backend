@@ -11,6 +11,10 @@ const formSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    headerImage: {
+        type: String,
+        default: null
+    },
     customRoute: {
         type: String,
         required: true,

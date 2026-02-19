@@ -34,6 +34,7 @@ const questionSchema = z.object({
 export const formSchema = z.object({
     title: z.string().trim().min(1, { message: 'Title is required' }),
     description: z.string().trim().min(1, { message: 'Description is required' }),
+    headerImage: z.union([z.string().url(), z.literal(''), z.null()]).optional().transform(v => (v === '' ? undefined : v)),
     customRoute: z.string()
         .trim()
         .min(1, { message: 'Custom route is required' })

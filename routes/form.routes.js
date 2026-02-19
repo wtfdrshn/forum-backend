@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import formController from '../controllers/form.controller.js';
 import authMiddleware from '../middlewares/auth-middleware.js';
 import adminMiddleware from '../middlewares/admin-middleware.js';
@@ -7,6 +8,12 @@ import formValidator from '../validators/form.validator.js';
 import dbCheckMiddleware from '../middlewares/db-check-middleware.js';
 
 const formRouter = express.Router();
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, 'uploads/'),
+    filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
+});
+const upload = multer({ storage });
 
 // Public routes (no authentication required)
 formRouter.route('/route/:customRoute').get(dbCheckMiddleware, formController.getFormByRoute);
@@ -18,6 +25,7 @@ formRouter.route('/submit').post(
 
 // Admin routes (authentication and admin role required)
 formRouter.route('/admin/all').get(authMiddleware, adminMiddleware, formController.getAllForms);
+formRouter.route('/admin/upload-header').post(authMiddleware, adminMiddleware, upload.single('headerImage'), formController.uploadHeaderImage);
 formRouter.route('/admin/:id').get(authMiddleware, adminMiddleware, formController.getFormById);
 formRouter.route('/admin/create').post(
     authMiddleware,

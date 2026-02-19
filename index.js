@@ -40,9 +40,10 @@ const app = express();
 
 // CORS configuration - allow multiple origins for production and development
 const allowedOrigins = [
-  config.clientUrl,
-  'https://www.snsf.club',
-  'https://snsf.club',
+  process.env.CLIENT_URL || 'http://localhost:5173',
+  'https://www.snsf.live',
+  'https://snsf.live',
+  'http://localhost:5173'
 ].filter(Boolean); // Remove any undefined values
 
 app.use(cors({

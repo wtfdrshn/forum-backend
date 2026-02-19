@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import fs from 'fs';
+import { v2 as cloudinary } from 'cloudinary';
 import Form from '../models/form.model.js';
 import FormResponse from '../models/formResponse.model.js';
 
@@ -663,6 +665,38 @@ const getFormStats = async (req, res) => {
     }
 };
 
+// Upload header image (admin only) – returns URL for use in form
+const uploadHeaderImage = async (req, res) => {
+    try {
+        if (!req.file || !req.file.path) {
+            return res.status(400).json({
+                success: false,
+                message: 'No image file provided'
+            });
+        }
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            folder: 'forms/headers',
+            resource_type: 'image'
+        });
+        fs.unlink(req.file.path, (err) => {
+            if (err) console.error('Failed to delete temp file:', err);
+        });
+        res.status(200).json({
+            success: true,
+            url: result.secure_url
+        });
+    } catch (error) {
+        console.error('Error uploading header image:', error);
+        if (req.file?.path && fs.existsSync(req.file.path)) {
+            fs.unlink(req.file.path, () => {});
+        }
+        res.status(500).json({
+            success: false,
+            message: 'Failed to upload header image'
+        });
+    }
+};
+
 export default {
     getFormByRoute,
     submitFormResponse,
@@ -674,5 +708,6 @@ export default {
     getFormResponses,
     getFormResponse,
     updateResponseStatus,
-    getFormStats
+    getFormStats,
+    uploadHeaderImage
 };
