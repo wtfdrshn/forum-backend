@@ -3,11 +3,10 @@ import config from '../config/config.js';
 import User from '../models/user.model.js';
 
 const connectDB = async () => {
-  
   try {
 
     const uri = config.mongoURI || process.env.MONGO_URI;
-
+    console.log("uri", uri);
     if (!uri) {
       console.error('MongoDB URI is not configured. Please set MONGO_URI environment variable.');
       return false;

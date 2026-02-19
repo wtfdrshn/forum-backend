@@ -22,6 +22,8 @@ import './models/emailQueue.model.js';
 import './models/recruitment.model.js';
 import './models/recruitmentApplication.model.js';
 import './models/recruitmentEmailQueue.model.js';
+import './models/form.model.js';
+import './models/formResponse.model.js';
 
 import authRoute from './routes/auth.routes.js';
 import memberRoute from './routes/member.routes.js';
@@ -30,6 +32,7 @@ import blogRoute from './routes/blog.routes.js';
 import eventRoute from './routes/event.routes.js';
 import teamRoute from './routes/team.routes.js';
 import recruitmentRoute from './routes/recruitment.routes.js';
+import formRoute from './routes/form.routes.js';
 import adminRoute from './routes/admin.routes.js';
 dotenv.config();
 
@@ -37,10 +40,9 @@ const app = express();
 
 // CORS configuration - allow multiple origins for production and development
 const allowedOrigins = [
-  process.env.CLIENT_URL || 'http://localhost:5173',
-  'https://www.snsf.live',
-  'https://snsf.live',
-  'http://localhost:5173'
+  config.clientUrl,
+  'https://www.snsf.club',
+  'https://snsf.club',
 ].filter(Boolean); // Remove any undefined values
 
 app.use(cors({
@@ -110,6 +112,7 @@ app.use(`/api/${config.apiVersion}/blog`, blogRoute); // http://localhost:3000/a
 app.use(`/api/${config.apiVersion}/events`, eventRoute); // http://localhost:3000/api/v1/event
 app.use(`/api/${config.apiVersion}/team`, teamRoute); // http://localhost:3000/api/v1/team
 app.use(`/api/${config.apiVersion}/recruitment`, recruitmentRoute); // http://localhost:3000/api/v1/recruitment
+app.use(`/api/${config.apiVersion}/form`, formRoute); // http://localhost:3000/api/v1/form
 app.use(`/api/${config.apiVersion}/admin`, adminRoute); // http://localhost:3000/api/v1/admin
 
 app.use(errorHandler);
